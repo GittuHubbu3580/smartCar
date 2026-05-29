@@ -1,10 +1,17 @@
 from flask import Flask, request, jsonify
 import time
 import serial
+import threading
 port = ''
 ard = serial.Serial(port, 9600)
+USvalue = 0;
 
 app = Flask(__name__)
+
+def getUSvalue():
+    USvalue = ard.read_until('\n')
+
+threading.Thread(target=getUSvalue).start()
 
 @app.route('/dataSending', methods=["POST"])
 def dataStuff():
@@ -13,19 +20,19 @@ def dataStuff():
 
     try:
         if(command == 'SFCforward'):
-            ard.write(b'F')
+            ard.write(b'F\n')
             return jsonify({"response": "Command Sent"})
 
-        if(command == 'SFCbackward'):
-            ard.write(b'B')
+        elif(command == 'SFCbackward'):
+            ard.write(b'B\n')
             return jsonify({"response": "Command Sent"})
 
-        if(command == 'SFCleft'):
-            ard.write(b'L')
+        elif(command == 'SFCleft'):
+            ard.write(b'L\n')
             return jsonify({"response": "Command Sent"})
 
-        if(command == 'SFCright'):
-            ard.write(b'R')
+        elif(command == 'SFCright'):
+            ard.write(b'R\n')
             return jsonify({"response": "Command Sent"})
 
     except:
