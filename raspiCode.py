@@ -1,4 +1,4 @@
-from flask import Flask, request, json
+from flask import Flask, request, jsonify
 import time
 import serial
 port = ''
@@ -14,15 +14,19 @@ def dataStuff():
     try:
         if(command == 'SFCforward'):
             ard.write(b'F')
+            return jsonify({"response": "Command Sent"})
 
         if(command == 'SFCbackward'):
             ard.write(b'B')
+            return jsonify({"response": "Command Sent"})
 
         if(command == 'SFCleft'):
             ard.write(b'L')
+            return jsonify({"response": "Command Sent"})
 
         if(command == 'SFCright'):
             ard.write(b'R')
+            return jsonify({"response": "Command Sent"})
 
     except:
         print("Error Dude")
