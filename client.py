@@ -1,6 +1,6 @@
 import requests
 import tkinter as tk
-url = http://192.168.86.46:5000/dataSending
+url = 'http://192.168.86.46:5000/dataSending'
 
 window = tk.Tk()
 window.title("FlaskControlPanel")
