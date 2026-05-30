@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import time
 import serial
 import threading
-port = ''
+port = '/dev/tty.usbmodem14101'
 ard = serial.Serial(port, 9600)
 USvalue = 0;
 
@@ -21,19 +21,23 @@ def dataStuff():
     try:
         if(command == 'SFCforward'):
             ard.write(b'F\n')
-            return jsonify({"response": "Command Sent"})
+            return jsonify({"response": "Command Sent (Forward)"})
 
         elif(command == 'SFCbackward'):
             ard.write(b'B\n')
-            return jsonify({"response": "Command Sent"})
+            return jsonify({"response": "Command Sent (Backward)"})
 
         elif(command == 'SFCleft'):
             ard.write(b'L\n')
-            return jsonify({"response": "Command Sent"})
+            return jsonify({"response": "Command Sent (Left)"})
 
         elif(command == 'SFCright'):
             ard.write(b'R\n')
-            return jsonify({"response": "Command Sent"})
+            return jsonify({"response": "Command Sent (Right)"})
+
+        elif(command == 'SFCstop'):
+            ard.write(b'S\n')
+            return jsonify({"response": "Command Sent Stop"})
 
     except:
         print("Error Dude")
