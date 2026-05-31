@@ -1,6 +1,8 @@
 import requests
 import tkinter as tk
-url = 'http://192.168.86.63:5000/dataSending'
+import keyboard
+serverIP = 'http://192.168.86.53:5000'
+url = f"{serverIP}/dataSending"
 
 window = tk.Tk()
 window.title("FlaskControlPanel")
@@ -63,7 +65,7 @@ backwardButton = tk.Button(window, text="Backward", command=lambda:sendBackward(
 leftButton = tk.Button(window, text="Left", command=lambda:sendLeft())
 rightButton = tk.Button(window, text="right", command=lambda:sendRight())
 responseLabel = tk.Label(window, text="!@#YET TO RECEIVE#@!")
-stopButton = tk.button(window, text="STOP", command=lambda:stop())
+stopButton = tk.Button(window, text="STOP", command=lambda:stop())
 
 forwardButton.grid(row=0, column=1)
 leftButton.grid(row=1, column=0)
@@ -72,4 +74,4 @@ backwardButton.grid(row=4, column=1)
 stopButton.grid(row=5, column=1)
 responseLabel.grid(row=7, column=1)
 
-window.mainloop()
+window.mainloop() 
