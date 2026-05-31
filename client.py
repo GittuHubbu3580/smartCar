@@ -1,12 +1,9 @@
 import requests
-import tkinter as tk
-import keyboard
+from pynput import keyboard
+import time
 serverIP = 'http://192.168.86.53:5000'
 url = f"{serverIP}/dataSending"
-
-window = tk.Tk()
-window.title("FlaskControlPanel")
-window.geometry('500x500')
+current_key = None
 
 def sendForward():
     try:
@@ -14,20 +11,20 @@ def sendForward():
         comms = requests.post(url, json=data)
         recvmssg = comms.json()
         actualMssg = recvmssg["response"]
-        responseLabel.config(text=actualMssg)
+        print(actualMssg)
         
     except:
-        responseLabel.config(text="the json Data did not get sent (SFCforward)")
+        print("the json Data did not get sent (SFCforward)")
 def sendBackward():
     try:
         data = {"com": "SFCbackward"} #SFC means Sent From Client :)
         comms = requests.post(url, json=data)
         recvmssg = comms.json()
         actualMssg = recvmssg["response"]
-        responseLabel.config(text=actualMssg)
+        print(actualMssg)
 
     except:
-        responseLabel.config(text="the json Data did not get sent (SFCbackward)")
+        print("the json Data did not get sent (SFCbackward)")
 
 def sendLeft():
     try:
@@ -35,10 +32,10 @@ def sendLeft():
         comms = requests.post(url, json=data)
         recvmssg = comms.json()
         actualMssg = recvmssg["response"]
-        responseLabel.config(text=actualMssg)
+        print(actualMssg)
 
     except:
-        responseLabel.config(text="the json Data did not get sent (SFCleft)")
+        print("the json Data did not get sent (SFCleft)")
 
 def sendRight():
     try:
@@ -46,32 +43,61 @@ def sendRight():
         comms = requests.post(url, json=data)
         recvmssg = comms.json()
         actualMssg = recvmssg["response"]
-        responseLabel.config(text=actualMssg)
+        print(actualMssg)
 
     except:
-        responseLabel.config(text="the json Data did not get sent (SFCright)")
+        print("the json Data did not get sent (SFCright)")
 
 def stop():
-    data = {"com": "SFCstop"}
-    comms = requests.post(url, json=data)
-    recvmssg = comms.json()
-    actualMssg = recvmssg["response"]
-    responseLabel.config(text=actualMssg)
+    try:
+        data = {"com": "SFCstop"}
+        comms = requests.post(url, json=data)
+        recvmssg = comms.json()
+        actualMssg = recvmssg["response"]
+        print(actualMssg)
+
+    except:
+        print("the json Data did not get sent (SFCstop)")
+
+def on_press(key):
+    global current_key
+
+    try:
+        if key.char == current_key:
+            return
+
+        current_key = key.char
+
+        if key.char == "w":
+            sendForward()
+
+        elif key.char == "s":
+            sendBackward()
+
+        elif key.char == "a":
+            sendRight()
+
+        elif key.char == "d":
+            sendLeft()
+
+    except AttributeError:
+        pass
 
 
+def on_release(key):
+    global current_key
 
-forwardButton = tk.Button(window, text="Forward", command=lambda:sendForward())
-backwardButton = tk.Button(window, text="Backward", command=lambda:sendBackward())
-leftButton = tk.Button(window, text="Left", command=lambda:sendLeft())
-rightButton = tk.Button(window, text="right", command=lambda:sendRight())
-responseLabel = tk.Label(window, text="!@#YET TO RECEIVE#@!")
-stopButton = tk.Button(window, text="STOP", command=lambda:stop())
+    try:
+        if key.char in ["w", "a", "s", "d"]:
+            current_key = None
+            stop()
 
-forwardButton.grid(row=0, column=1)
-leftButton.grid(row=1, column=0)
-rightButton.grid(row=1, column=2)
-backwardButton.grid(row=4, column=1)
-stopButton.grid(row=5, column=1)
-responseLabel.grid(row=7, column=1)
+    except AttributeError:
+        pass
+    
+with keyboard.Listener(
+    on_press=on_press,
+    on_release=on_release
+) as listener:
 
-window.mainloop() 
+    listener.join()
