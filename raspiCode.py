@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import time
 import serial
 import threading
-port = '/dev/tty.usbmodem14101'
+port = '/dev/ttyACM0' #The port at which the Arduino is Connected to on the Raspberry PI...
 ard = serial.Serial(port, 9600)
 USvalue = 0;
 
