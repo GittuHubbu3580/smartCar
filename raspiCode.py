@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import time
 import serial
 import threading
+
 port = '/dev/ttyACM0' #The port at which the Arduino is Connected to on the Raspberry PI...
 ard = serial.Serial(port, 9600)
 
@@ -41,4 +42,3 @@ def dataStuff():
         
 
 app.run(host='0.0.0.0', port=5000)
-

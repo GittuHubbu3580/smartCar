@@ -2,8 +2,8 @@ import requests
 from pynput import keyboard
 import time
 
-serverIP = '' #Raspberrypi's IP + The port Flask is running on configured in 'raspiCode.py'
-url = f"{serverIP}/dataSending"
+serverIP = '192.168.86.53:5000' #Raspberrypi's IP + The port Flask is running on configured in 'raspiCode.py'
+url = f"http://{serverIP}/dataSending"
 current_key = None
 
 def sendForward():
