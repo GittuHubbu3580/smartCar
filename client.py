@@ -1,6 +1,7 @@
 import requests
 from pynput import keyboard
 import time
+
 serverIP = 'http://192.168.86.53:5000'
 url = f"{serverIP}/dataSending"
 current_key = None
@@ -75,10 +76,10 @@ def on_press(key):
             sendBackward()
 
         elif key.char == "a":
-            sendLeft()
+            sendRight()
 
         elif key.char == "d":
-            sendRight()
+            sendLeft()
 
     except AttributeError:
         pass
