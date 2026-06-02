@@ -264,4 +264,8 @@ This project is open-source and free to modify for educational purposes.
 
 ---
 
+##!DISCLAIMER!**
+
+This code is Coded by myself, and sometime may not work as intended to. I'm still Learning dude. 
+
 Made with ☕ Python, Flask, Arduino, and a lot of debugging 😆
