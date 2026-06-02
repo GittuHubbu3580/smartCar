@@ -1,8 +1,15 @@
-blinker==1.9.0
-click==8.4.1
-Flask==3.1.3
-itsdangerous==2.2.0
-Jinja2==3.1.6
-MarkupSafe==3.0.3
-pyserial==3.5
-Werkzeug==3.1.8s
+Required Python libraries for client.py : pyobjc-framework-Quartz==12.2
+                                          requests==2.34.2
+                                          six==1.17.0
+                                          urllib3==2.7.0
+
+
+Required Python Libraries for raspiCode.py : blinker==1.9.0
+                                             click==8.4.1
+                                             Flask==3.1.3
+                                             itsdangerous==2.2.0
+                                             Jinja2==3.1.6
+                                             MarkupSafe==3.0.3
+                                             pyserial==3.5
+                                             Werkzeug==3.1.8
+
