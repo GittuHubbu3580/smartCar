@@ -4,14 +4,8 @@ import serial
 import threading
 port = '/dev/ttyACM0' #The port at which the Arduino is Connected to on the Raspberry PI...
 ard = serial.Serial(port, 9600)
-USvalue = 0;
 
 app = Flask(__name__)
-
-def getUSvalue():
-    USvalue = ard.read_until('\n')
-
-threading.Thread(target=getUSvalue).start()
 
 @app.route('/dataSending', methods=["POST"])
 def dataStuff():
