@@ -2,16 +2,11 @@ from flask import Flask, request, jsonify
 import time
 import serial
 import threading
-port = '/dev/tty.usbmodem14101'
+port = '/dev/ttyACM0'
 ard = serial.Serial(port, 9600)
-USvalue = 0;
+
 
 app = Flask(__name__)
-
-def getUSvalue():
-    USvalue = ard.read_until('\n')
-
-threading.Thread(target=getUSvalue).start()
 
 @app.route('/dataSending', methods=["POST"])
 def dataStuff():
@@ -47,4 +42,3 @@ def dataStuff():
         
 
 app.run(host='0.0.0.0', port=5000)
-
