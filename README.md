@@ -1,4 +1,4 @@
-# SmartCar 🚗🤖
+# SmartCar 
 
 A Raspberry Pi + Arduino powered smart robot car controlled over a local network using Python, Flask, serial communication, and keyboard input.
 
