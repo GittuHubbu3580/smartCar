@@ -2,7 +2,7 @@ import requests
 from pynput import keyboard
 import time
 
-serverIP = '192.168.86.53:5000' #Raspberrypi's IP + The port Flask is running on configured in 'raspiCode.py'
+serverIP = '' #IP of the raspberrypi + The port the flask server is running on
 url = f"http://{serverIP}/dataSending"
 current_key = None
 
