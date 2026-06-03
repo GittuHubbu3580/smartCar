@@ -335,4 +335,4 @@ Feel free to modify, improve, and learn from it.
 Made with ☕ Python, Flask, OpenCV, Arduino, Raspberry Pi, and many hours of debugging.
 
 # DISCLAIMER!
- These programs were fully codes by me, and may not work for all. I'm still learning
+ These programs were fully coded by me, and may not work for all. I'm still learning
