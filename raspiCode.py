@@ -4,7 +4,7 @@ import serial
 import threading
 import cv2
 
-webcam = cv2.VideoCapture('/dev/video0')
+webcam = cv2.VideoCapture('/dev/video0') #Insert the video device inside the parentheses if it differs on your Pi.
 webcam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 port = '/dev/ttyACM0' #The port at which the Arduino is Connected to on the Raspberry PI...
 ard = serial.Serial(port, 9600)
