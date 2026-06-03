@@ -1,87 +1,89 @@
-# SmartCar 
+# 🚗 SmartCar
 
-A Raspberry Pi + Arduino powered smart robot car controlled over a local network using Python, Flask, serial communication, and keyboard input.
+A Raspberry Pi and Arduino powered smart robot car controlled over a local network using Python, Flask, OpenCV, and Serial Communication.
 
-This project allows you to control a robotic car remotely from another device on the same network using **WASD controls**. Commands are sent from a client device → Raspberry Pi Flask server → Arduino → Motor Driver → Motors.
+The project allows a client device to remotely control a robotic vehicle while receiving a live video stream from an onboard camera.
 
 ---
 
-## Features ✨
+## ✨ Features
 
-* 🌐 Remote control over local network
-* ⌨️ Keyboard-based driving (`W`, `A`, `S`, `D`)
+* 🌐 Remote control over local Wi-Fi network
+* ⌨️ WASD keyboard controls
+* 📷 Live camera streaming using OpenCV
 * 🔄 Raspberry Pi ↔ Arduino serial communication
-* ⚡ Flask-powered API server
-* 🚗 Motor movement control (Forward, Backward, Left, Right, Stop)
-* 🧩 Modular architecture for adding sensors and computer vision later
+* ⚡ Flask-powered control server
+* 🚗 Forward, Backward, Left, Right, and Stop controls
+* 🧩 Easily expandable for sensors and autonomous features
+* 🤖 Designed for future obstacle avoidance and computer vision projects
 
 ---
 
-## How It Works 🛠️
-
-The system works in 3 stages:
-
-1. **Client Device (`client.py`)**
-
-   * Detects keyboard input
-   * Sends movement commands to the Raspberry Pi using HTTP requests
-
-2. **Raspberry Pi (`raspiCode.py`)**
-
-   * Runs a Flask server
-   * Receives commands from the client
-   * Sends serial commands to the Arduino
-
-3. **Arduino (`main.cpp`)**
-
-   * Reads serial commands
-   * Controls motor directions through motor pins
-
-### Data Flow
+## 🏗️ System Architecture
 
 ```text
-Laptop / Client
-      ↓
-HTTP Request (Flask)
-      ↓
+Client Device
+(Laptop/Desktop)
+        │
+        ▼
+HTTP Requests
+        │
+        ▼
 Raspberry Pi
-      ↓
-Serial Communication (USB)
-      ↓
+(Flask Server)
+        │
+        ▼
+USB Serial Communication
+        │
+        ▼
 Arduino
-      ↓
+        │
+        ▼
 L298N Motor Driver
-      ↓
+        │
+        ▼
 TT Motors
 ```
 
 ---
 
-## Project Structure 📂
+## 📂 Project Structure
 
 ```text
 SmartCar/
-│── client.py        # Sends keyboard commands to Raspberry Pi
-│── raspiCode.py     # Flask server running on Raspberry Pi
-│── main.cpp         # Arduino motor control code
-│── README.md
+│
+├── client.py
+│   └── Keyboard control client
+│
+├── raspiCode.py
+│   └── Flask server, video streaming, serial communication
+│
+├── main.cpp
+│   └── Arduino motor control code
+│
+├── requirements.txt
+│   └── Python dependencies
+│
+└── README.md
 ```
 
 ---
 
-## Hardware Used 🔧
+## 🔧 Hardware Used
 
-* Raspberry Pi
-* Arduino (UNO/Nano compatible)
-* L298N Motor Driver
-* TT Motors
-* Chassis + Wheels
-* Battery Pack
-* USB connection between Raspberry Pi and Arduino
+| Component          | Purpose                    |
+| ------------------ | -------------------------- |
+| Raspberry Pi       | Main server and networking |
+| Arduino UNO/Nano   | Motor controller           |
+| L298N Motor Driver | Drives motors              |
+| TT Motors          | Vehicle movement           |
+| USB Webcam         | Live video feed            |
+| Battery Pack       | Power source               |
+| Robot Chassis      | Vehicle frame              |
 
 ---
 
-## Controls 🎮
+## 🎮 Controls
 
 | Key         | Action        |
 | ----------- | ------------- |
@@ -93,46 +95,52 @@ SmartCar/
 
 ---
 
-## Installation ⚙️
+## 📹 Live Video Streaming
 
-### 1. Clone the Repository
+The Raspberry Pi captures frames using OpenCV and streams them through Flask.
+
+Video Stream URL:
+
+```text
+http://RASPBERRY_PI_IP:5000/stream
+```
+
+Example:
+
+```text
+http://192.168.1.25:5000/stream
+```
+
+Open the URL in any browser connected to the same network.
+
+---
+
+## ⚙️ Installation
+
+### Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
+git clone https://github.com/GittuHubbu3580/smartCar.git
+cd smartCar
+```
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
 ```
 
 ---
 
-### 2. Install Client Dependencies
+## 🚀 Setup
 
-For `client.py`:
-
-```bash
-pip install pyobjc-framework-Quartz==12.2 requests==2.34.2 six==1.17.0 urllib3==2.7.0
-```
-
----
-
-### 3. Install Raspberry Pi Dependencies
-
-For `raspiCode.py`:
-
-```bash
-pip install blinker==1.9.0 click==8.4.1 Flask==3.1.3 itsdangerous==2.2.0 Jinja2==3.1.6 MarkupSafe==3.0.3 pyserial==3.5 Werkzeug==3.1.8
-```
-
----
-
-## Setup 🚀
-
-### Step 1 — Upload Arduino Code
+### 1. Upload Arduino Code
 
 Upload `main.cpp` to your Arduino using the Arduino IDE.
 
 ---
 
-### Step 2 — Connect Arduino to Raspberry Pi
+### 2. Connect Arduino to Raspberry Pi
 
 Connect the Arduino via USB.
 
@@ -142,130 +150,186 @@ Check the serial port:
 ls /dev/tty*
 ```
 
-Update this line in `raspiCode.py` if needed:
+Update the port if necessary:
 
 ```python
-port = '/dev/ttyACM0'
+port = "/dev/ttyACM0"
 ```
 
 ---
 
-### Step 3 — Start Flask Server on Raspberry Pi
+### 3. Connect Webcam
 
-Run:
+Check available cameras:
+
+```bash
+v4l2-ctl --list-devices
+```
+
+Update if needed:
+
+```python
+webcam = cv2.VideoCapture("/dev/video0")
+```
+
+---
+
+### 4. Start the Flask Server
 
 ```bash
 python3 raspiCode.py
 ```
 
-The Flask server will run on:
+The server will start on:
 
 ```text
-http://RASPBERRY_PI_IP:5000
+http://0.0.0.0:5000
 ```
 
 ---
 
-### Step 4 — Configure Client
+### 5. Configure Client
 
-Open `client.py` and edit:
-
-```python
-serverIP = ''
-```
-
-Example:
+Open `client.py` and set:
 
 ```python
-serverIP = 'http://192.168.1.10:5000'
+serverIP = "192.168.1.25:5000"
 ```
 
-Replace with your Raspberry Pi's local IP.
+Replace with your Raspberry Pi's IP address.
 
 ---
 
-### Step 5 — Run Client
-
-Run:
+### 6. Run the Client
 
 ```bash
 python3 client.py
 ```
 
-Now use:
+Use:
 
 ```text
 W A S D
 ```
 
-to control the car 🎉
+to control the vehicle.
 
 ---
 
-## Example Architecture Diagram
+## 📡 API Endpoints
+
+### Send Movement Commands
+
+```http
+POST /dataSending
+```
+
+Example Request:
+
+```json
+{
+    "com": "SFCforward"
+}
+```
+
+Available Commands:
 
 ```text
-Client (Laptop)
-      │
-      ▼
-HTTP POST Requests
-      │
-      ▼
-Raspberry Pi Flask Server
-      │
-      ▼
-Serial Commands
-      │
-      ▼
-Arduino
-      │
-      ▼
-L298N Motor Driver
-      │
-      ▼
-Motors
+SFCforward
+SFCbackward
+SFCleft
+SFCright
+SFCstop
 ```
 
 ---
 
-## Future Improvements 🚀
+### Video Stream
 
-* 📷 OpenCV live camera streaming
+```http
+GET /stream
+```
+
+Returns an MJPEG video stream.
+
+---
+
+## 🔮 Future Improvements
+
 * 📏 Ultrasonic obstacle detection
-* 🛑 Emergency braking system
-* 🎮 Mobile app controller
-* 🤖 Autonomous driving mode
+* 🛑 Automatic emergency braking
+* 🤖 Autonomous navigation
+* 📍 GPS integration
+* 🎮 Mobile application
+* 🧠 Object detection using OpenCV
+* 🗺️ Mapping and path planning
+* 🎤 Voice control
 
 ---
 
-## Troubleshooting 🧰
+## 🛠️ Troubleshooting
 
-### Car not moving?
+### Car Not Moving
 
-* Check battery power
-* Verify Arduino is connected to Raspberry Pi
-* Confirm correct serial port (`/dev/ttyACM0`)
+* Check battery voltage
+* Verify motor driver wiring
+* Confirm Arduino connection
+* Verify serial port configuration
+
+### Client Cannot Connect
+
+* Verify Raspberry Pi IP address
 * Ensure Flask server is running
-* Check Raspberry Pi IP address
+* Confirm both devices are on the same network
 
-### Commands not being sent?
+### Video Stream Not Working
 
-Make sure `serverIP` in `client.py` is correct:
-
-```python
-serverIP = 'http://YOUR_RASPBERRY_PI_IP:5000'
-```
+* Verify camera connection
+* Check camera device path
+* Confirm OpenCV detects the webcam
 
 ---
 
-## License 📜
+## 📚 Technologies Used
 
-This project is open-source and free to modify for educational purposes.
+* Python
+* Flask
+* OpenCV
+* Requests
+* PySerial
+* Arduino C++
+* Raspberry Pi OS
 
 ---
 
-## !DISCLAIMER!
+## 👨‍💻 Author
 
-This code is Coded by myself, and sometime may not work as intended to. I'm still Learning dude. 
+Created by **Shravan** as a robotics, networking, and computer vision learning project.
 
-Made with ☕ Python, Flask, Arduino, and a lot of debugging 😆
+This project helped me learn:
+
+* Embedded Systems
+* Python Networking
+* Computer Vision
+* Raspberry Pi Development
+* Arduino Programming
+
+---
+
+## ⭐ Support
+
+If you found this project interesting, consider giving it a star.
+
+It helps others discover the project and motivates future development.
+
+---
+
+## 📜 License
+
+This project is open-source and available for educational purposes.
+
+Feel free to modify, improve, and learn from it.
+
+---
+
+Made with ☕ Python, Flask, OpenCV, Arduino, Raspberry Pi, and many hours of debugging.
