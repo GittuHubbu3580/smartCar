@@ -2,11 +2,12 @@ import requests
 from pynput import keyboard
 import time
 
-serverIP = '' #IP of the raspberrypi + The port the flask server is running on
+serverIP = '192.168.86.64:5000' #IP of the raspberrypi + The port the flask server is running on
 url = f"http://{serverIP}/dataSending"
 current_key = None
 
 def sendForward():
+    global url
     try:
         data = {"com": "SFCforward"} #SFC means Sent From Client :)
         comms = requests.post(url, json=data)
@@ -17,6 +18,7 @@ def sendForward():
     except:
         print("the json Data did not get sent (SFCforward)")
 def sendBackward():
+    global url
     try:
         data = {"com": "SFCbackward"} #SFC means Sent From Client :)
         comms = requests.post(url, json=data)
@@ -28,6 +30,7 @@ def sendBackward():
         print("the json Data did not get sent (SFCbackward)")
 
 def sendLeft():
+    global url
     try:
         data = {"com": "SFCleft"} #SFC means Sent From Client :)
         comms = requests.post(url, json=data)
@@ -39,6 +42,7 @@ def sendLeft():
         print("the json Data did not get sent (SFCleft)")
 
 def sendRight():
+    global url
     try:
         data = {"com": "SFCright"} #SFC means Sent From Client :)
         comms = requests.post(url, json=data)
@@ -50,6 +54,7 @@ def sendRight():
         print("the json Data did not get sent (SFCright)")
 
 def stop():
+    global url
     try:
         data = {"com": "SFCstop"}
         comms = requests.post(url, json=data)
@@ -70,10 +75,10 @@ def on_press(key):
         current_key = key.char
 
         if key.char == "w":
-            sendForward()
+            sendBackward()
 
         elif key.char == "s":
-            sendBackward()
+            sendForward()
 
         elif key.char == "a":
             sendLeft()

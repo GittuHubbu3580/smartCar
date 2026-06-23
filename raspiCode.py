@@ -3,6 +3,8 @@ import time
 import serial
 import threading
 import cv2
+from ultralytics import YOLO
+model = YOLO('yolov8n.pt')
 
 webcam = cv2.VideoCapture('/dev/video0') #Insert the video device inside the parentheses if it differs on your Pi.
 webcam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
@@ -13,9 +15,11 @@ app = Flask(__name__)
 def generate_frames():
     while True:
         ret, frame = webcam.read()
-        frame = cv2.flip(frame, 1)
-        ret, buffer = cv2.imencode('.jpg', frame)
-        frame_bytes = buffer.tobytes()
+        result = model(frame, imgsz=320, verbose=False)
+        annotated_frame = result[0].plot()
+        ret, jpg = cv2.imencode('.jpg', annotated_frame)
+        [cv2.IMWRITE_JPEG_QUALITY, 40]
+        frame_bytes = jpg.tobytes()
 
         yield(
              b'--frame\r\n'
@@ -51,7 +55,7 @@ def dataStuff():
             return jsonify({"response": "Command Sent Stop"})
 
     except:
-        print("Error Dude")
+        print("Error")
         return jsonify({"response": "An Error Has Occured"})
 
 @app.route('/stream')
